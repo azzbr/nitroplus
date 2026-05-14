@@ -1,0 +1,48 @@
+{
+  "common": {
+    "siteTitle": "Nitro Plus Trading",
+    "siteDescription": "Auto parts trading — OEM, performance, and aftermarket. 4×4, muscle, luxury, exotic, JDM, heavy machinery, classics, EV, and standard passenger vehicles.",
+    "requestQuote": "Request a part",
+    "contactUs": "Contact us",
+    "addToQuote": "Add to Quote",
+    "removeFromQuote": "Remove",
+    "quoteBasket": "Inquiry Basket",
+    "quoteBasketEmpty": "Your inquiry basket is empty",
+    "quoteCount": "{count} items",
+    "localeEn": "English",
+    "localeAr": "العربية",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "whatsapp": "WhatsApp",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "close": "Close"
+  },
+  "nav": {
+    "home": "Home",
+    "categories": "Categories",
+    "parts": "Parts",
+    "shop": "Shop",
+    "about": "About Us",
+    "contact": "Contact",
+    "quote": "Inquiry Basket"
+  },
+  "home": {
+    "heroTitle": "The Parts You Need. The Expertise You Trust.",
+    "heroSubtitle": "Auto parts trading for 4×4, muscle, luxury, exotic, JDM, heavy machinery, classics, EV, and everything in between.",
+    "heroCta": "Request a part",
+    "heroSecondary": "Browse categories"
+  },
+  "footer": {
+    "companyName": "Nitro Plus Trading",
+    "description": "Auto parts trading operating under a UAE general trade license. Years of hands-on industry experience — not a dropshipping front.",
+    "quickLinks": "Quick Links",
+    "vehicleCategories": "Vehicle Categories",
+    "partCategories": "Part Categories",
+    "contactInfo": "Contact Info",
+    "rights": "All rights reserved."
+  }
+}
