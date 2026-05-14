@@ -97,7 +97,7 @@ The site has a **shop / parts catalog**, but it is a **Request-for-Quote (RFQ) f
 
 > **Portability rule — read this first.** This site must run on **Vercel, Netlify, Cloudflare Pages, or a self-hosted server without code changes.** Vercel is the default deploy target below, but it is not a dependency. If a task would couple the codebase to a single platform, stop and flag it instead of building it.
 
-- **Framework:** Next.js 15 (App Router, React Server Components by default)
+- **Framework:** Next.js 16 (App Router, React Server Components by default)
 - **Language:** TypeScript — `strict: true`, `noUncheckedIndexedAccess: true`, no `any`
 - **Styling:** Tailwind CSS v4 (using the `@theme` directive and CSS variables, not v3 config files)
 - **Components:** shadcn/ui (copy into `components/ui/`, don't install as a dep)
