@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { QuoteForm } from "@/components/sections/QuoteForm";
+import { QuoteBasketItems } from "@/components/shop/QuoteBasketItems";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "quote" });
+  return {
+    title: t("metaTitle"),
+    description: t("subheadline"),
+  };
+}
 
 export default async function QuotePage() {
   const locale = await getLocale();
@@ -46,6 +61,7 @@ export default async function QuotePage() {
 
       <section>
         <div className="mx-auto max-w-3xl px-6 py-12 md:py-20 lg:px-8">
+          <QuoteBasketItems />
           <QuoteForm />
         </div>
       </section>

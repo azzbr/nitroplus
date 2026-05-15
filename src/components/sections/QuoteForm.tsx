@@ -10,6 +10,7 @@ import {
   quoteFormDefaults,
   type QuotePayload,
 } from "@/lib/quote-schema";
+import { useHasHydrated, useQuoteBasket } from "@/lib/quote-store";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +24,10 @@ type SubmitState =
 export function QuoteForm() {
   const t = useTranslations("quote");
   const [state, setState] = useState<SubmitState>({ status: "idle" });
+
+  const basketItems = useQuoteBasket((s) => s.items);
+  const clearBasket = useQuoteBasket((s) => s.clear);
+  const hasHydrated = useHasHydrated();
 
   const {
     register,
@@ -39,11 +44,17 @@ export function QuoteForm() {
 
   const onSubmit = async (data: QuotePayload) => {
     setState({ status: "idle" });
+    const payload: QuotePayload = {
+      ...data,
+      items: hasHydrated
+        ? basketItems.map(({ slug, name, quantity }) => ({ slug, name, quantity }))
+        : [],
+    };
     try {
       const res = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
       const json = await res.json();
       if (!res.ok || !json.ok) {
@@ -59,6 +70,7 @@ export function QuoteForm() {
         whatsappLink: typeof json.whatsappLink === "string" ? json.whatsappLink : "",
       });
       reset();
+      clearBasket();
     } catch (err) {
       setState({
         status: "error",

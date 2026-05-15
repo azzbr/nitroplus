@@ -5,6 +5,7 @@
     "requestQuote": "Request a part",
     "contactUs": "Contact us",
     "addToQuote": "Add to Quote",
+    "inQuote": "In Quote",
     "removeFromQuote": "Remove",
     "quoteBasket": "Inquiry Basket",
     "quoteBasketEmpty": "Your inquiry basket is empty",
@@ -28,7 +29,9 @@
     "shop": "Shop",
     "about": "About Us",
     "contact": "Contact",
-    "quote": "Inquiry Basket"
+    "quote": "Inquiry Basket",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "home": {
     "experience": {
@@ -73,6 +76,7 @@
     "ctaSecondary": "Request a Quote"
   },
   "about": {
+    "metaTitle": "About",
     "eyebrow": "About Nitro Plus",
     "headline": "Industry experience, not a website.",
     "subheadline": "We trade auto parts because we know auto parts. From a Hellcat cam swap to a Caterpillar hydraulic line — the depth comes from hands-on work, not a dropshipping login.",
@@ -99,6 +103,7 @@
     "ctaButtonSecondary": "Request a quote"
   },
   "contact": {
+    "metaTitle": "Contact",
     "eyebrow": "Get in touch",
     "headline": "Talk to us.",
     "subheadline": "Need a specific part, pricing, or sourcing help? Whatever the inquiry — B2B, B2C, fleet, or a one-off restoration — the fastest paths are below.",
@@ -114,6 +119,7 @@
     "quoteCtaButton": "Request a quote"
   },
   "careers": {
+    "metaTitle": "Careers",
     "eyebrow": "Join the team",
     "headline": "Build with us.",
     "subheadline": "Nitro Plus is built by people who actually know the difference between a part that fits and a part that works. If that sounds like you, get in touch.",
@@ -130,6 +136,7 @@
     "applyWhatsappCta": "WhatsApp us"
   },
   "shop": {
+    "metaTitle": "Shop",
     "eyebrow": "Browse the catalog",
     "headline": "Find your part.",
     "subheadline": "Browse by vehicle vertical or part system. Add what you need to a quote — we come back with pricing, availability, and lead time.",
@@ -172,10 +179,20 @@
       "sourcing": "Sourcing & Special Orders"
     },
     "catalogTitle": "Product catalog",
+    "catalogSubtitle": "Browse, filter, add to quote",
     "catalogPlaceholder": "The product catalog is being populated. In the meantime, the fastest path is to send us what you're looking for via the quote request — we capture the vehicle and part details up front and reply with pricing, availability, and lead time.",
-    "catalogCta": "Request a quote"
+    "catalogCta": "Request a quote",
+    "backToShop": "Back to shop",
+    "noImage": "No image",
+    "productQuoteCopy": "Pricing and availability vary by build, fitment, and current sourcing channels. Add this part to a quote and we'll reply with confirmed pricing, lead time, and any fitment notes within one business day.",
+    "tier": {
+      "oem": "OEM",
+      "oem-equivalent": "OEM-Equivalent",
+      "aftermarket": "Aftermarket"
+    }
   },
   "quote": {
+    "metaTitle": "Request a Quote",
     "eyebrow": "Request a quote",
     "headline": "Tell us what you need.",
     "subheadline": "Vehicle details, the part you're after, and how to reach you. We come back with pricing, availability, and lead time — usually within one business day.",
@@ -207,8 +224,14 @@
       "required": "Required",
       "invalidEmail": "Enter a valid email",
       "tooLong": "Too long",
-      "fourDigitYear": "Four-digit year, e.g. 2018"
-    }
+      "fourDigitYear": "Four-digit year, e.g. 2018",
+      "needsItemOrPartsText": "Add at least one item to your basket, or describe what you need here"
+    },
+    "basketTitle": "Items in your basket",
+    "basketSubtitle": "{count, plural, =1 {# item} other {# items}} ready to send",
+    "removeItem": "Remove from basket",
+    "increaseQty": "Increase quantity",
+    "decreaseQty": "Decrease quantity"
   },
   "footer": {
     "companyName": "Nitro Plus Trading",

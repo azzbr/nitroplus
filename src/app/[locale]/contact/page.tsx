@@ -1,8 +1,22 @@
+import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Mail, Phone, MessageCircle, FileText } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { COMPANY_INFO } from "@/lib/constants";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contact" });
+  return {
+    title: t("metaTitle"),
+    description: t("subheadline"),
+  };
+}
 
 type ContactMethod = {
   key: "email" | "phone" | "whatsapp";

@@ -1,13 +1,35 @@
+import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
-import { FileText } from "lucide-react";
-import { Link } from "@/i18n/navigation";
-import { Button } from "@/components/ui/button";
 import { VehicleCategories } from "@/components/sections/VehicleCategories";
 import { PartCategories } from "@/components/sections/PartCategories";
+import { CatalogGrid } from "@/components/shop/CatalogGrid";
+import { isValidPartSlug, isValidVehicleSlug } from "@/lib/products";
 
-export default async function ShopPage() {
+type Props = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ vehicle?: string; part?: string }>;
+};
+
+export async function generateMetadata({
+  params,
+}: Pick<Props, "params">): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "shop" });
+  return {
+    title: t("metaTitle"),
+    description: t("subheadline"),
+  };
+}
+
+export default async function ShopPage({ searchParams }: Props) {
   const locale = await getLocale();
   const t = await getTranslations({ locale, namespace: "shop" });
+
+  const sp = await searchParams;
+  const filter = {
+    vehicle: sp.vehicle && isValidVehicleSlug(sp.vehicle) ? sp.vehicle : undefined,
+    part: sp.part && isValidPartSlug(sp.part) ? sp.part : undefined,
+  };
 
   return (
     <div className="bg-background">
@@ -50,28 +72,7 @@ export default async function ShopPage() {
 
       <VehicleCategories />
       <PartCategories />
-
-      <section>
-        <div className="mx-auto max-w-3xl px-6 py-16 text-center md:py-24 lg:px-8">
-          <h2 className="font-display text-3xl font-bold uppercase tracking-tight text-foreground md:text-4xl">
-            {t("catalogTitle")}
-          </h2>
-          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            {t("catalogPlaceholder")}
-          </p>
-          <div className="mt-10 flex justify-center">
-            <Button
-              size="lg"
-              className="rounded-none bg-primary px-8 py-6 font-display text-base uppercase tracking-wider text-primary-foreground hover:bg-primary/90"
-            >
-              <Link href="/quote" locale={locale} className="inline-flex items-center">
-                <FileText className="me-2 h-5 w-5" />
-                {t("catalogCta")}
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <CatalogGrid locale={locale} filter={filter} />
     </div>
   );
 }

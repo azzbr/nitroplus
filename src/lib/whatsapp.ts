@@ -6,7 +6,7 @@ export function buildQuoteWhatsAppLink(
 ): string {
   if (!whatsappNumber) return "";
 
-  const lines = [
+  const lines: (string | null)[] = [
     "*Inquiry from Nitro Plus website*",
     "",
     `*Name:* ${payload.name}`,
@@ -15,13 +15,25 @@ export function buildQuoteWhatsAppLink(
     "",
     `*Vehicle:* ${payload.vehicleYear} ${payload.vehicleMake} ${payload.vehicleModel}`,
     payload.vehicleVin ? `*VIN:* ${payload.vehicleVin}` : null,
-    "",
-    "*Parts needed:*",
-    payload.partsNeeded,
-    payload.notes ? "" : null,
-    payload.notes ? `*Notes:* ${payload.notes}` : null,
-  ].filter((line): line is string => line !== null);
+  ];
 
-  const text = lines.join("\n");
+  if (payload.items.length > 0) {
+    lines.push("", "*Items in basket:*");
+    for (const item of payload.items) {
+      lines.push(`- ${item.name} (×${item.quantity})`);
+    }
+  }
+
+  if (payload.partsNeeded) {
+    lines.push("", "*Parts needed:*", payload.partsNeeded);
+  }
+
+  if (payload.notes) {
+    lines.push("", `*Notes:* ${payload.notes}`);
+  }
+
+  const text = lines
+    .filter((line): line is string => line !== null)
+    .join("\n");
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 }

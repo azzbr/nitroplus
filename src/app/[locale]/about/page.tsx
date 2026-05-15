@@ -1,7 +1,21 @@
+import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, FileText } from "lucide-react";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "about" });
+  return {
+    title: t("metaTitle"),
+    description: t("subheadline"),
+  };
+}
 
 export default async function AboutPage() {
   const locale = await getLocale();

@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/shared/Logo";
 import { LocaleSwitcher } from "@/components/shared/LocaleSwitcher";
 import { QuoteBasketIcon } from "@/components/shared/QuoteBasketIcon";
+import { MobileNav } from "@/components/sections/MobileNav";
 import { getLocale } from "next-intl/server";
 
 export async function Header() {
@@ -37,8 +38,9 @@ export async function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <QuoteBasketIcon count={0} locale={locale} />
+          <QuoteBasketIcon locale={locale} />
           <LocaleSwitcher />
+          <MobileNav locale={locale} />
         </div>
       </div>
     </header>

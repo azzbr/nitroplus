@@ -42,7 +42,7 @@ export async function sendQuoteEmail(payload: QuotePayload): Promise<SendResult>
 }
 
 function buildPlainText(p: QuotePayload): string {
-  const sections = [
+  const sections: string[] = [
     "NITRO PLUS — QUOTE INQUIRY",
     "==========================",
     "",
@@ -61,7 +61,16 @@ function buildPlainText(p: QuotePayload): string {
 
   if (p.vehicleVin) sections.push(`VIN:   ${p.vehicleVin}`);
 
-  sections.push("", "PARTS NEEDED", "------------", p.partsNeeded);
+  if (p.items.length > 0) {
+    sections.push("", "ITEMS IN BASKET", "---------------");
+    for (const item of p.items) {
+      sections.push(`- ${item.name} (qty: ${item.quantity}) [${item.slug}]`);
+    }
+  }
+
+  if (p.partsNeeded) {
+    sections.push("", "PARTS NEEDED", "------------", p.partsNeeded);
+  }
 
   if (p.notes) sections.push("", "NOTES", "-----", p.notes);
 

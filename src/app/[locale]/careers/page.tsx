@@ -1,7 +1,21 @@
+import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Mail, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { COMPANY_INFO } from "@/lib/constants";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "careers" });
+  return {
+    title: t("metaTitle"),
+    description: t("subheadline"),
+  };
+}
 
 export default async function CareersPage() {
   const locale = await getLocale();
