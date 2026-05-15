@@ -3,8 +3,8 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:30
 export const COMPANY_INFO = {
   NAME: "Nitro Plus Trading",
   LICENSE: "UAE General Trade License",
-  PHONE: "",
-  EMAIL: "",
+  PHONE: "" as string,
+  EMAIL: "" as string,
   WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",
 } as const;
 

@@ -134,21 +134,18 @@ The site has a **shop / parts catalog**, but it is a **Request-for-Quote (RFQ) f
 ```
 app/
   [locale]/                  # i18n routing (en, ar)
-    page.tsx                 # home
+    page.tsx                 # home — hero + trust + sourcing + inquiry CTA (NO category browse, see §9 + §9a)
     about/page.tsx           # our story + experience
-    categories/
-      page.tsx               # all vehicle verticals
-      [slug]/page.tsx        # 4x4, muscle, luxury, exotic, european-sport, jdm, heavy, classic, ev, standard
-    parts/
-      page.tsx               # all part categories (the "system" pages)
-      [slug]/page.tsx        # wheels-tires, suspension, engines-forced-induction, drivetrain, exhaust, brakes, cooling-fluids, fuel-induction, electrical, ecu-tuning, lighting, body, off-road-accessories, interior, general-parts, sourcing
+    careers/page.tsx         # "always looking for talent" + apply CTA (email + WhatsApp)
     shop/
-      page.tsx               # full catalog: search, filters, grid
+      page.tsx               # PRIMARY browse surface — VehicleCategories block + PartCategories block + catalog grid (search, filters)
       [slug]/page.tsx        # individual product page with "Add to Quote"
     quote/
       page.tsx               # RFQ basket: review items, fill contact + vehicle info, submit
     contact/page.tsx
     layout.tsx
+  # NOTE: /categories and /parts top-level routes are DEPRECATED. Browse moved into /shop.
+  # If those route folders still exist on disk, they're legacy and slated for cleanup.
   api/
     quote/route.ts           # receives RFQ submission, sends email via Resend, returns WhatsApp deep link
 components/
@@ -202,8 +199,9 @@ The brand should feel like **forged steel and high-performance fuel** — not pa
 
 ### Typography
 
-- **Body:** Inter (Latin) + IBM Plex Sans Arabic (Arabic). Loaded via `next/font`.
-- **Display:** [TODO — a confident, slightly industrial sans like Geist, Space Grotesk, or Sora works well for automotive without going kitsch. Avoid anything italic-racing-stripe.]
+- **Body (Latin):** Geist, loaded via `next/font/google` in `src/app/layout.tsx`. Wired into `--font-sans` token.
+- **Display:** Oswald, loaded via `next/font/google`. Wired into `--font-display` token. Used for the Hero headline, Logo, stat values, button labels — anything that should feel industrial / forged.
+- **Body (Arabic):** **unresolved.** Geist is Latin-only, so `/ar` body text currently falls through to the OS Arabic default. **Open task:** wire IBM Plex Sans Arabic (or similar) and gate it on `lang="ar"`. Oswald is also Latin-only — Arabic headlines fall through to OS sans; same applies.
 - **Scale:** stick to Tailwind defaults: `text-sm, text-base, text-lg, text-xl, text-2xl, text-4xl, text-6xl`. Don't invent in-between sizes.
 
 ### Imagery
@@ -268,9 +266,11 @@ The brand should feel like **forged steel and high-performance fuel** — not pa
 
 ### Commerce (RFQ model)
 
+**Marketing hero exception (owner override, 2026-05).** The home page hero strip is a curated marketing surface. It may display approximate scale numbers, aspirational reach claims, or rounded business stats (current: "25K+ Parts in Stock", "48H Express Shipping", "120+ Countries Served") at the owner's discretion. **This carve-out applies only to the home page hero.** Every other surface — product cards, category pages, shop catalog, search results, about page, footer — the rules below apply strictly. Do not propagate hero-style claims to product or shop UI.
+
 - ❌ **No "Add to Cart" / "Buy Now" / "Checkout" copy.** The button is "Add to Quote" / "Request Pricing." This is a deliberate honesty signal — we don't pretend to be a transactional shop.
 - ❌ No fabricated prices. If a price isn't confirmed by the owner, the product card says "Request quote," full stop.
-- ❌ No fake stock indicators ("Only 3 left!", "In stock", "Ships in 2 days"). We don't hold stock. Acceptable copy: "Available to source" or just no stock UI at all.
+- ❌ No fake stock indicators ("Only 3 left!", "In stock", "Ships in 2 days") on product cards, catalog rows, or category pages. We don't hold stock. Acceptable copy: "Available to source" or just no stock UI at all.
 - ❌ No fake shipping estimates, delivery countdowns, or order tracking UI.
 - ❌ No checkout / payment / billing pages or components. If a future task hints at one, push back before building.
 - ❌ No user accounts, login screens, "My Orders" pages, or wishlist UI at launch. Add only when explicitly scoped.
@@ -298,34 +298,46 @@ The brand should feel like **forged steel and high-performance fuel** — not pa
 
 ---
 
-## 9. Content Pillars
+## 9. Content Pillars — Home Page
 
-These should appear, in some form, on the home page:
+The home page is for trust, scope, and conversion — **not** for browsing the catalog. Vehicle and part category browse lives on `/shop` (see §9a). The home page should be:
 
-1. **Hero** — what we do + the breadth of vehicles we cover + a single clear CTA ("Request a part" / "Contact us").
-2. **Vehicle verticals** — 4×4, American muscle, luxury, exotics, European sport, JDM, heavy machinery, classics, EV, and standard. Don't list all ten at the top — group them visually (e.g. *Performance* / *Luxury & Exotic* / *Off-road & Heavy* / *Everyday & EV*) so the home page stays scannable, with the full list on `/categories`.
-3. **Part categories** — wheels & tires, suspension, engines & forced induction, drivetrain, exhaust, brakes, electrical, body, interior, off-road accessories, and sourcing. Visual, scannable, system-by-system.
-4. **Experience / why us** — years in the industry, depth of knowledge across verticals (from a Hellcat cam swap to a Caterpillar hydraulic line), UAE trade license. This is the trust block and our biggest moat.
-5. **Sourcing & special orders** — call this out as its own pillar. The ability to find hard-to-get, NOS, and discontinued parts is genuinely differentiating and worth a dedicated mention.
-6. **Inquiry CTA** — a clear path to contact, ideally a short form (vehicle make / model / year + part needed + contact) plus WhatsApp.
-7. **Footer** — full company info, locations, license, languages.
+1. **Hero** — what we do + the breadth of vehicles we cover + a single clear CTA ("Request a part" / "Contact us"). Marketing stats row carve-out lives here (see §7).
+2. **Experience / why us** — years in the industry, depth of knowledge across verticals (from a Hellcat cam swap to a Caterpillar hydraulic line), UAE trade license. This is the trust block and our biggest moat.
+3. **Sourcing & special orders** — call this out as its own pillar. The ability to find hard-to-get, NOS, and discontinued parts is genuinely differentiating and worth a dedicated mention.
+4. **Inquiry CTA** — a clear path to contact, ideally a short form (vehicle make / model / year + part needed + contact) plus WhatsApp.
+5. **Footer** — full company info, locations, license, languages.
+
+## 9a. Content Pillars — Shop Page
+
+`/shop` is the single browse-and-buy surface. Both browse axes (by vehicle, by part) live above the catalog grid.
+
+1. **VehicleCategories** — all ten verticals, grouped visually so the page stays scannable:
+   - *Performance:* American muscle, European sport, JDM
+   - *Luxury & Exotic:* luxury / premium, exotics & supercars
+   - *Off-road & Heavy:* 4×4 / off-road, heavy machinery & commercial
+   - *Everyday & EV:* standard passenger, electric & hybrid, classic & vintage
+2. **PartCategories** — 16 system blocks (wheels & tires, suspension, engines & forced induction, drivetrain, exhaust, brakes, cooling & fluids, fuel & induction, electrical, ECU tuning, lighting, body & exterior, off-road accessories, interior, general replacement parts, sourcing & special orders). Visual and scannable — not a wall of text.
+3. **Catalog grid** — search, filter (by vehicle / part / brand / fitment), product cards with "Add to Quote" buttons. The working surface.
 
 ---
 
 ## 10. Current Status
 
-- [ ] Project scaffold (Next.js 15, TS, Tailwind v4, pnpm)
+- [x] Project scaffold (Next.js 16, TS, Tailwind v4, pnpm)
 - [x] CLAUDE.md (this file)
 - [ ] Strip all legacy marine content from the existing Replit site
-- [ ] Design tokens in `globals.css`
-- [ ] shadcn/ui initialized
-- [ ] i18n routing (`/en`, `/ar`)
-- [ ] Layout shell — Header, Footer, LocaleSwitcher, WhatsApp floating button, QuoteBasket icon
-- [ ] Hero section
-- [ ] Vehicle categories section + detail pages
-- [ ] Part categories section + detail pages
+- [x] Design tokens in `globals.css` (brand, surface, text, border + shadcn mapping + Oswald display)
+- [x] shadcn/ui initialized
+- [x] i18n routing (`/en`, `/ar`)
+- [x] Layout shell — Header, Footer, LocaleSwitcher, WhatsApp floating button, QuoteBasket icon (components exist; finishing/polish ongoing)
+- [x] Hero section (v0-integrated, dark-mode default, RTL-correct, hero stats override per §7 carve-out)
+- [x] Careers page (generic "always looking for talent" + email/WhatsApp apply CTAs)
 - [ ] About / Experience section
-- [ ] **Shop catalog** — `/shop` grid with search + filters, individual product pages
+- [ ] **Shop catalog** — `/shop` page with VehicleCategories + PartCategories browse blocks + search/filter catalog grid + individual product pages (§9a)
+- [ ] Cleanup: delete deprecated `/categories` and `/parts` top-level routes once `/shop` covers their function
+- [ ] Cleanup: delete `src/app/globals from v0.css` and `src/app/layout from v0.tsx` reference pastes
+- [ ] Arabic body + display fonts (IBM Plex Sans Arabic or equivalent) wired and gated on `lang="ar"`
 - [ ] **Quote basket** — Zustand store, `localStorage` persistence, drawer or page UI
 - [ ] **RFQ submission** — `/quote` page form, `api/quote` route, Resend email template, WhatsApp deep-link generator
 - [ ] Contact page (separate from RFQ — general inquiries)

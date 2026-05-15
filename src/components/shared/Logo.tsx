@@ -9,7 +9,7 @@ export function Logo({ locale }: LogoProps) {
     <Link
       href="/"
       locale={locale}
-      className="flex items-center gap-2 font-bold text-xl tracking-tight"
+      className="flex items-center gap-2 font-display font-bold uppercase text-xl tracking-tight"
     >
       <span className="text-brand">Nitro</span>
       <span>Plus</span>
