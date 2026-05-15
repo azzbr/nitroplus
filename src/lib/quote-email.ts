@@ -7,7 +7,7 @@ type SendResult = { ok: true } | { ok: false; error: string };
 export async function sendQuoteEmail(payload: QuotePayload): Promise<SendResult> {
   const apiKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.RESEND_FROM_EMAIL;
-  const toEmail = COMPANY_INFO.EMAIL || process.env.RESEND_TO_EMAIL;
+  const toEmail = process.env.INQUIRY_EMAIL || COMPANY_INFO.EMAIL;
 
   if (!apiKey || !fromEmail || !toEmail) {
     return { ok: false, error: "Email service not configured" };
