@@ -12,10 +12,15 @@ export function buildQuoteWhatsAppLink(
     `*Name:* ${payload.name}`,
     `*Email:* ${payload.email}`,
     `*Phone:* ${payload.phone}`,
-    "",
-    `*Vehicle:* ${payload.vehicleYear} ${payload.vehicleMake} ${payload.vehicleModel}`,
-    payload.vehicleVin ? `*VIN:* ${payload.vehicleVin}` : null,
   ];
+
+  if (payload.vehicleMake && payload.vehicleModel && payload.vehicleYear) {
+    lines.push(
+      "",
+      `*Vehicle:* ${payload.vehicleYear} ${payload.vehicleMake} ${payload.vehicleModel}`
+    );
+    if (payload.vehicleVin) lines.push(`*VIN:* ${payload.vehicleVin}`);
+  }
 
   if (payload.items.length > 0) {
     lines.push("", "*Items in basket:*");

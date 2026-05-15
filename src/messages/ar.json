@@ -189,6 +189,30 @@
       "oem": "أصلي",
       "oem-equivalent": "مكافئ للأصلي",
       "aftermarket": "ما بعد البيع"
+    },
+    "filter": {
+      "vehicle": "المركبة",
+      "part": "نظام القطعة",
+      "search": "بحث",
+      "searchPlaceholder": "ابحث عن قطعة…",
+      "sort": "ترتيب"
+    },
+    "sort": {
+      "default": "افتراضي",
+      "nameAsc": "الاسم أ → ي",
+      "nameDesc": "الاسم ي → أ"
+    },
+    "removeFilter": "إزالة الفلتر",
+    "clearAllFilters": "مسح الكل",
+    "searchResultsTitle": "نتائج البحث",
+    "allProductsHeading": "كل المنتجات",
+    "resultsCount": "{total, plural, =1 {عرض # منتج} =2 {عرض منتجين} other {عرض # منتجات (من {start} إلى {end})}}",
+    "resultsEmpty": "لا توجد منتجات",
+    "emptyStateBody": "لا توجد منتجات مطابقة. جرّب إزالة بعض الفلاتر، أو أرسل لنا استفساراً مباشراً.",
+    "pagination": {
+      "label": "ترقيم الصفحات",
+      "prev": "السابق",
+      "next": "التالي"
     }
   },
   "quote": {
@@ -210,6 +234,9 @@
     "partsNeededPlaceholder": "مثلاً: مساعدات أمامية، أصلية أو BC Racing إن وُجدت",
     "notes": "ملاحظات",
     "notesPlaceholder": "أي معلومات إضافية — ملاحظات تركيب، الفئة المفضّلة، الموعد النهائي، إلخ.",
+    "notesSectionWithItems": "أي شيء آخر؟",
+    "notesWithItemsLabel": "ملاحظات — تفاصيل المركبة، التركيب، الموعد، أي شيء",
+    "notesWithItemsPlaceholder": "المركبة (السنة / الماركة / الموديل)، تفاصيل التركيب، مدى الاستعجال، أو أي قطعة غير موجودة في سلتك. اختياري.",
     "optional": "اختياري",
     "submit": "إرسال الاستفسار",
     "submitting": "جاري الإرسال…",

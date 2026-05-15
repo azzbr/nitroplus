@@ -14,7 +14,8 @@ export const config = {
     // - API routes
     // - _next/static (static files)
     // - _next/image (image optimization files)
-    // - favicon.ico (favicon file)
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    // - public asset folders (products/, icons, og images)
+    // - any path with a file extension (treated as a static asset)
+    "/((?!api|_next/static|_next/image|products|favicon.ico|robots.txt|sitemap.xml|.*\\.).*)",
   ],
 };

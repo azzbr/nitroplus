@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -51,13 +52,15 @@ export default async function ProductPage({ params }: Props) {
           </Link>
 
           <div className="mt-8 grid gap-12 lg:grid-cols-2">
-            <div className="flex aspect-[4/3] items-center justify-center overflow-hidden border border-border/50 bg-surface-elevated text-muted-foreground">
+            <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border border-border/50 bg-surface-elevated text-muted-foreground">
               {product.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={product.image}
                   alt={product.name}
-                  className="h-full w-full object-cover"
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover"
+                  priority
                 />
               ) : (
                 <span className="text-xs uppercase tracking-wider">

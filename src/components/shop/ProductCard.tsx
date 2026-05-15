@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { AddToQuoteButton } from "./AddToQuoteButton";
@@ -17,14 +18,15 @@ export async function ProductCard({ product, locale }: Props) {
       <Link
         href={`/shop/${product.slug}`}
         locale={locale}
-        className="flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-border/50 bg-surface-elevated text-muted-foreground"
+        className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-border/50 bg-surface-elevated text-muted-foreground"
       >
         {product.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={product.image}
             alt={product.name}
-            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover transition-transform group-hover:scale-105"
           />
         ) : (
           <span className="text-xs uppercase tracking-wider">

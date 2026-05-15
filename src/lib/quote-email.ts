@@ -51,15 +51,19 @@ function buildPlainText(p: QuotePayload): string {
     `Name:  ${p.name}`,
     `Email: ${p.email}`,
     `Phone: ${p.phone}`,
-    "",
-    "VEHICLE",
-    "-------",
-    `Year:  ${p.vehicleYear}`,
-    `Make:  ${p.vehicleMake}`,
-    `Model: ${p.vehicleModel}`,
   ];
 
-  if (p.vehicleVin) sections.push(`VIN:   ${p.vehicleVin}`);
+  if (p.vehicleMake && p.vehicleModel && p.vehicleYear) {
+    sections.push(
+      "",
+      "VEHICLE",
+      "-------",
+      `Year:  ${p.vehicleYear}`,
+      `Make:  ${p.vehicleMake}`,
+      `Model: ${p.vehicleModel}`
+    );
+    if (p.vehicleVin) sections.push(`VIN:   ${p.vehicleVin}`);
+  }
 
   if (p.items.length > 0) {
     sections.push("", "ITEMS IN BASKET", "---------------");

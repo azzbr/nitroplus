@@ -28,6 +28,7 @@ export function QuoteForm() {
   const basketItems = useQuoteBasket((s) => s.items);
   const clearBasket = useQuoteBasket((s) => s.clear);
   const hasHydrated = useHasHydrated();
+  const hasItems = hasHydrated && basketItems.length > 0;
 
   const {
     register,
@@ -171,89 +172,101 @@ export function QuoteForm() {
         </div>
       </fieldset>
 
-      <fieldset className="space-y-4">
-        <legend className="font-display text-lg font-bold uppercase tracking-tight text-foreground">
-          {t("vehicleSection")}
-        </legend>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <Field
-            name="vehicleMake"
-            label={t("vehicleMake")}
-            error={translateError(errors.vehicleMake?.message)}
-          >
-            <Input
-              id="vehicleMake"
-              placeholder="Ford"
-              {...register("vehicleMake")}
-              aria-invalid={Boolean(errors.vehicleMake)}
-            />
-          </Field>
-          <Field
-            name="vehicleModel"
-            label={t("vehicleModel")}
-            error={translateError(errors.vehicleModel?.message)}
-          >
-            <Input
-              id="vehicleModel"
-              placeholder="Mustang GT"
-              {...register("vehicleModel")}
-              aria-invalid={Boolean(errors.vehicleModel)}
-            />
-          </Field>
-          <Field
-            name="vehicleYear"
-            label={t("vehicleYear")}
-            error={translateError(errors.vehicleYear?.message)}
-          >
-            <Input
-              id="vehicleYear"
-              inputMode="numeric"
-              placeholder="2018"
-              {...register("vehicleYear")}
-              aria-invalid={Boolean(errors.vehicleYear)}
-            />
-          </Field>
-          <Field
-            name="vehicleVin"
-            label={`${t("vehicleVin")} (${t("optional")})`}
-            error={translateError(errors.vehicleVin?.message)}
-            className="sm:col-span-3"
-          >
-            <Input
-              id="vehicleVin"
-              {...register("vehicleVin")}
-              aria-invalid={Boolean(errors.vehicleVin)}
-            />
-          </Field>
-        </div>
-      </fieldset>
+      {!hasItems && (
+        <fieldset className="space-y-4">
+          <legend className="font-display text-lg font-bold uppercase tracking-tight text-foreground">
+            {t("vehicleSection")}
+          </legend>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Field
+              name="vehicleMake"
+              label={t("vehicleMake")}
+              error={translateError(errors.vehicleMake?.message)}
+            >
+              <Input
+                id="vehicleMake"
+                placeholder="Ford"
+                {...register("vehicleMake")}
+                aria-invalid={Boolean(errors.vehicleMake)}
+              />
+            </Field>
+            <Field
+              name="vehicleModel"
+              label={t("vehicleModel")}
+              error={translateError(errors.vehicleModel?.message)}
+            >
+              <Input
+                id="vehicleModel"
+                placeholder="Mustang GT"
+                {...register("vehicleModel")}
+                aria-invalid={Boolean(errors.vehicleModel)}
+              />
+            </Field>
+            <Field
+              name="vehicleYear"
+              label={t("vehicleYear")}
+              error={translateError(errors.vehicleYear?.message)}
+            >
+              <Input
+                id="vehicleYear"
+                inputMode="numeric"
+                placeholder="2018"
+                {...register("vehicleYear")}
+                aria-invalid={Boolean(errors.vehicleYear)}
+              />
+            </Field>
+            <Field
+              name="vehicleVin"
+              label={`${t("vehicleVin")} (${t("optional")})`}
+              error={translateError(errors.vehicleVin?.message)}
+              className="sm:col-span-3"
+            >
+              <Input
+                id="vehicleVin"
+                {...register("vehicleVin")}
+                aria-invalid={Boolean(errors.vehicleVin)}
+              />
+            </Field>
+          </div>
+        </fieldset>
+      )}
 
       <fieldset className="space-y-4">
         <legend className="font-display text-lg font-bold uppercase tracking-tight text-foreground">
-          {t("inquirySection")}
+          {hasItems ? t("notesSectionWithItems") : t("inquirySection")}
         </legend>
-        <Field
-          name="partsNeeded"
-          label={t("partsNeeded")}
-          error={translateError(errors.partsNeeded?.message)}
-        >
-          <Textarea
-            id="partsNeeded"
-            rows={5}
-            placeholder={t("partsNeededPlaceholder")}
-            {...register("partsNeeded")}
-            aria-invalid={Boolean(errors.partsNeeded)}
-          />
-        </Field>
+        {!hasItems && (
+          <Field
+            name="partsNeeded"
+            label={t("partsNeeded")}
+            error={translateError(errors.partsNeeded?.message)}
+          >
+            <Textarea
+              id="partsNeeded"
+              rows={5}
+              placeholder={t("partsNeededPlaceholder")}
+              {...register("partsNeeded")}
+              aria-invalid={Boolean(errors.partsNeeded)}
+            />
+          </Field>
+        )}
         <Field
           name="notes"
-          label={`${t("notes")} (${t("optional")})`}
+          label={
+            hasItems
+              ? `${t("notesWithItemsLabel")} (${t("optional")})`
+              : `${t("notes")} (${t("optional")})`
+          }
           error={translateError(errors.notes?.message)}
         >
           <Textarea
             id="notes"
-            rows={3}
-            placeholder={t("notesPlaceholder")}
+            rows={hasItems ? 5 : 3}
+            placeholder={
+              hasItems
+                ? t("notesWithItemsPlaceholder")
+                : t("notesPlaceholder")
+            }
             {...register("notes")}
             aria-invalid={Boolean(errors.notes)}
           />

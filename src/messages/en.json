@@ -189,6 +189,30 @@
       "oem": "OEM",
       "oem-equivalent": "OEM-Equivalent",
       "aftermarket": "Aftermarket"
+    },
+    "filter": {
+      "vehicle": "Vehicle",
+      "part": "Part System",
+      "search": "Search",
+      "searchPlaceholder": "Search parts…",
+      "sort": "Sort"
+    },
+    "sort": {
+      "default": "Default",
+      "nameAsc": "Name A → Z",
+      "nameDesc": "Name Z → A"
+    },
+    "removeFilter": "Remove filter",
+    "clearAllFilters": "Clear all",
+    "searchResultsTitle": "Search results",
+    "allProductsHeading": "All products",
+    "resultsCount": "Showing {start}–{end} of {total, plural, =1 {# product} other {# products}}",
+    "resultsEmpty": "0 products",
+    "emptyStateBody": "No products match your filters. Try clearing some filters, or send us an inquiry directly.",
+    "pagination": {
+      "label": "Pagination",
+      "prev": "Previous",
+      "next": "Next"
     }
   },
   "quote": {
@@ -210,6 +234,9 @@
     "partsNeededPlaceholder": "e.g. Front coilovers, OEM or BC Racing if available",
     "notes": "Notes",
     "notesPlaceholder": "Anything else we should know — fitment notes, tier preference, deadline, etc.",
+    "notesSectionWithItems": "Anything else?",
+    "notesWithItemsLabel": "Notes — vehicle details, fitment, deadline, anything",
+    "notesWithItemsPlaceholder": "Vehicle (year / make / model), fitment specifics, urgency, or any parts not in your basket. Optional.",
     "optional": "optional",
     "submit": "Send inquiry",
     "submitting": "Sending…",
