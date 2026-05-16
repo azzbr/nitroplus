@@ -105,7 +105,10 @@ export default async function LocaleLayout({ children, params }: Props) {
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} ${ibmPlexArabic.variable} ${cairoArabic.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col"
+      >
         <NextIntlClientProvider messages={messages}>
           <StructuredData />
           <Header />

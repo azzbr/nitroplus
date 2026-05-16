@@ -6,6 +6,10 @@ export const COMPANY_INFO = {
   PHONE: "+97333866353" as string,
   EMAIL: "azizbr@gmail.com" as string,
   WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",
+  // Public-facing referral inbox shown on /careers. Independent of the
+  // server-side CAREERS_EMAIL env var (which routes the API submissions).
+  // Update to a real inbox once the domain is verified + email forwarding is wired.
+  CAREERS_INBOX: "career@nitroplustrading.com",
 } as const;
 
 export const VEHICLE_CATEGORIES = [

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { FileText, MessageCircle } from "lucide-react";
@@ -11,6 +11,11 @@ import {
   type QuotePayload,
 } from "@/lib/quote-schema";
 import { useHasHydrated, useQuoteBasket } from "@/lib/quote-store";
+import {
+  VEHICLE_MAKES,
+  VEHICLE_YEARS,
+  getMakeByLabel,
+} from "@/lib/vehicles";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,12 +38,16 @@ export function QuoteForm() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<QuotePayload>({
     resolver: zodResolver(quoteSchema),
     defaultValues: quoteFormDefaults,
   });
+
+  const currentMake = useWatch({ control, name: "vehicleMake" });
+  const modelsForMake = getMakeByLabel(currentMake)?.models ?? [];
 
   const translateError = (key: string | undefined): string | undefined =>
     key ? t(`errors.${key}` as "errors.required") : undefined;
@@ -177,6 +186,9 @@ export function QuoteForm() {
           <legend className="font-display text-lg font-bold uppercase tracking-tight text-foreground">
             {t("vehicleSection")}
           </legend>
+          <p className="text-xs text-muted-foreground">
+            {t("vehicleHint")}
+          </p>
           <div className="grid gap-4 sm:grid-cols-3">
             <Field
               name="vehicleMake"
@@ -185,10 +197,17 @@ export function QuoteForm() {
             >
               <Input
                 id="vehicleMake"
+                list="vehicle-makes"
+                autoComplete="off"
                 placeholder="Ford"
                 {...register("vehicleMake")}
                 aria-invalid={Boolean(errors.vehicleMake)}
               />
+              <datalist id="vehicle-makes">
+                {VEHICLE_MAKES.map((m) => (
+                  <option key={m.slug} value={m.label} />
+                ))}
+              </datalist>
             </Field>
             <Field
               name="vehicleModel"
@@ -197,10 +216,17 @@ export function QuoteForm() {
             >
               <Input
                 id="vehicleModel"
-                placeholder="Mustang GT"
+                list="vehicle-models"
+                autoComplete="off"
+                placeholder="Mustang"
                 {...register("vehicleModel")}
                 aria-invalid={Boolean(errors.vehicleModel)}
               />
+              <datalist id="vehicle-models">
+                {modelsForMake.map((m) => (
+                  <option key={m} value={m} />
+                ))}
+              </datalist>
             </Field>
             <Field
               name="vehicleYear"
@@ -209,11 +235,18 @@ export function QuoteForm() {
             >
               <Input
                 id="vehicleYear"
+                list="vehicle-years"
+                autoComplete="off"
                 inputMode="numeric"
                 placeholder="2018"
                 {...register("vehicleYear")}
                 aria-invalid={Boolean(errors.vehicleYear)}
               />
+              <datalist id="vehicle-years">
+                {VEHICLE_YEARS.map((y) => (
+                  <option key={y} value={y} />
+                ))}
+              </datalist>
             </Field>
             <Field
               name="vehicleVin"
@@ -223,6 +256,7 @@ export function QuoteForm() {
             >
               <Input
                 id="vehicleVin"
+                autoComplete="off"
                 {...register("vehicleVin")}
                 aria-invalid={Boolean(errors.vehicleVin)}
               />

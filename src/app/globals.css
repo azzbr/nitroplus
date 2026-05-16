@@ -65,6 +65,16 @@
 }
 
 :root {
+  /* Aurora effect color stops (used by AuroraBackground) */
+  --white: #ffffff;
+  --black: #000000;
+  --transparent: transparent;
+  --blue-500: #3b82f6;
+  --indigo-300: #a5b4fc;
+  --blue-300: #93c5fd;
+  --violet-200: #ddd6fe;
+  --blue-400: #60a5fa;
+
   /* Brand colors — forged steel and high-performance fuel */
   --brand: oklch(0.62 0.22 28);
   --brand-accent: oklch(0.35 0.02 240);
@@ -165,4 +175,17 @@
   html {
     @apply font-sans;
   }
+}
+
+@keyframes aurora {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+.animate-aurora {
+  animation: aurora 60s linear infinite;
 }

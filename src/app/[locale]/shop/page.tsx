@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { FileText } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ShopFilterBar } from "@/components/shop/ShopFilterBar";
 import { ActiveFilterChips } from "@/components/shop/ActiveFilterChips";
 import { Pagination } from "@/components/shop/Pagination";
@@ -72,29 +73,8 @@ export default async function ShopPage({ searchParams }: Props) {
   return (
     <div className="bg-background">
       {!isFiltered && (
-        <section className="relative overflow-hidden border-b border-border/50">
-          <div className="absolute inset-0 opacity-[0.03]" aria-hidden="true">
-            <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern
-                  id="shop-grid"
-                  width="60"
-                  height="60"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M 60 0 L 0 0 0 60"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#shop-grid)" />
-            </svg>
-          </div>
-
-          <div className="relative z-10 mx-auto max-w-6xl px-6 py-10 lg:px-8 lg:py-14">
+        <AuroraBackground className="h-auto items-stretch border-b border-border/50 bg-background">
+          <div className="relative z-10 mx-auto w-full max-w-6xl px-6 py-12 lg:px-8 lg:py-20">
             <div className="flex flex-col items-start gap-3">
               <div className="flex items-center gap-3">
                 <div className="h-px w-12 bg-primary" />
@@ -110,7 +90,7 @@ export default async function ShopPage({ searchParams }: Props) {
               </p>
             </div>
           </div>
-        </section>
+        </AuroraBackground>
       )}
 
       <ShopFilterBar filter={filter} />
