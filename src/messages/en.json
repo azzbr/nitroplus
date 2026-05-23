@@ -307,8 +307,15 @@
       "invalidEmail": "Enter a valid email",
       "tooLong": "Too long",
       "fourDigitYear": "Four-digit year, e.g. 2018",
-      "needsItemOrPartsText": "Add at least one item to your basket, or describe what you need here"
+      "needsItemOrPartsText": "Add at least one item to your basket, or describe what you need here",
+      "tooManyFiles": "Too many attachments (max 5)",
+      "wrongType": "JPG or PDF only",
+      "fileTooLarge": "File too large (max 5 MB each)",
+      "totalTooLarge": "Attachments total over the 20 MB limit"
     },
+    "attachments": "Attach photos or documents",
+    "attachmentsHint": "JPG or PDF. Helpful for broken parts, fitment photos, or part-number references. Up to 5 files, 5 MB each, 20 MB total.",
+    "attachmentRemove": "Remove attachment",
     "basketTitle": "Items in your basket",
     "basketSubtitle": "{count, plural, =1 {# item} other {# items}} ready to send",
     "removeItem": "Remove from basket",

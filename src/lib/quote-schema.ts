@@ -6,6 +6,13 @@ export const quoteBasketItemSchema = z.object({
   quantity: z.number().int().min(1).max(99),
 });
 
+// Quote attachments (e.g. "broken part, looks like this"). JPG + PDF only.
+export const ATTACHMENT_ACCEPTED_TYPES = ["image/jpeg", "application/pdf"] as const;
+export const ATTACHMENT_ACCEPTED_MIME_SET = new Set<string>(ATTACHMENT_ACCEPTED_TYPES);
+export const ATTACHMENT_MAX_FILE_BYTES = 5 * 1024 * 1024;
+export const ATTACHMENT_MAX_FILES = 5;
+export const ATTACHMENT_MAX_TOTAL_BYTES = 20 * 1024 * 1024;
+
 // When items are present in the basket, vehicle + parts-needed are not required
 // (the items already say what the customer wants). When the basket is empty,
 // the customer is doing a raw inquiry and must describe vehicle + parts.

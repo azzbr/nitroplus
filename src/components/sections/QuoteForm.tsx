@@ -4,10 +4,14 @@ import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { FileText, MessageCircle } from "lucide-react";
+import { FileText, MessageCircle, Paperclip, X } from "lucide-react";
 import {
   quoteSchema,
   quoteFormDefaults,
+  ATTACHMENT_ACCEPTED_TYPES,
+  ATTACHMENT_MAX_FILE_BYTES,
+  ATTACHMENT_MAX_FILES,
+  ATTACHMENT_MAX_TOTAL_BYTES,
   type QuotePayload,
 } from "@/lib/quote-schema";
 import { useHasHydrated, useQuoteBasket } from "@/lib/quote-store";
@@ -35,6 +39,9 @@ export function QuoteForm() {
   const hasHydrated = useHasHydrated();
   const hasItems = hasHydrated && basketItems.length > 0;
 
+  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachmentError, setAttachmentError] = useState<string | undefined>();
+
   const {
     register,
     handleSubmit,
@@ -52,19 +59,75 @@ export function QuoteForm() {
   const translateError = (key: string | undefined): string | undefined =>
     key ? t(`errors.${key}` as "errors.required") : undefined;
 
+  const acceptString = ATTACHMENT_ACCEPTED_TYPES.join(",");
+
+  const validateAttachmentBatch = (
+    incoming: File[],
+    current: File[]
+  ): { ok: true; merged: File[] } | { ok: false; reason: string } => {
+    const merged = [...current, ...incoming];
+    if (merged.length > ATTACHMENT_MAX_FILES) {
+      return { ok: false, reason: "tooManyFiles" };
+    }
+    for (const f of incoming) {
+      if (!(ATTACHMENT_ACCEPTED_TYPES as readonly string[]).includes(f.type)) {
+        return { ok: false, reason: "wrongType" };
+      }
+      if (f.size > ATTACHMENT_MAX_FILE_BYTES) {
+        return { ok: false, reason: "fileTooLarge" };
+      }
+    }
+    const total = merged.reduce((s, f) => s + f.size, 0);
+    if (total > ATTACHMENT_MAX_TOTAL_BYTES) {
+      return { ok: false, reason: "totalTooLarge" };
+    }
+    return { ok: true, merged };
+  };
+
+  const handleAttachmentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const incoming = Array.from(e.target.files ?? []);
+    e.target.value = ""; // allow re-picking the same file after a removal
+    if (incoming.length === 0) return;
+
+    const result = validateAttachmentBatch(incoming, attachments);
+    if (!result.ok) {
+      setAttachmentError(result.reason);
+      return;
+    }
+    setAttachments(result.merged);
+    setAttachmentError(undefined);
+  };
+
+  const removeAttachment = (idx: number) => {
+    setAttachments((cur) => cur.filter((_, i) => i !== idx));
+    setAttachmentError(undefined);
+  };
+
   const onSubmit = async (data: QuotePayload) => {
     setState({ status: "idle" });
-    const payload: QuotePayload = {
-      ...data,
-      items: hasHydrated
-        ? basketItems.map(({ slug, name, quantity }) => ({ slug, name, quantity }))
-        : [],
-    };
+    const itemsForApi = hasHydrated
+      ? basketItems.map(({ slug, name, quantity }) => ({ slug, name, quantity }))
+      : [];
+
+    const fd = new FormData();
+    fd.set("name", data.name);
+    fd.set("email", data.email);
+    fd.set("phone", data.phone);
+    fd.set("vehicleMake", data.vehicleMake);
+    fd.set("vehicleModel", data.vehicleModel);
+    fd.set("vehicleYear", data.vehicleYear);
+    fd.set("vehicleVin", data.vehicleVin);
+    fd.set("partsNeeded", data.partsNeeded);
+    fd.set("notes", data.notes);
+    fd.set("items", JSON.stringify(itemsForApi));
+    for (const file of attachments) {
+      fd.append("attachments", file);
+    }
+
     try {
       const res = await fetch("/api/quote", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: fd,
       });
       const json = await res.json();
       if (!res.ok || !json.ok) {
@@ -81,6 +144,8 @@ export function QuoteForm() {
       });
       reset();
       clearBasket();
+      setAttachments([]);
+      setAttachmentError(undefined);
     } catch (err) {
       setState({
         status: "error",
@@ -305,6 +370,55 @@ export function QuoteForm() {
             aria-invalid={Boolean(errors.notes)}
           />
         </Field>
+
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="quote-attachments">
+            {t("attachments")} ({t("optional")})
+          </Label>
+          <input
+            id="quote-attachments"
+            type="file"
+            multiple
+            accept={acceptString}
+            onChange={handleAttachmentChange}
+            aria-invalid={Boolean(attachmentError)}
+            className="block w-full cursor-pointer border border-border/50 bg-background text-sm text-foreground file:me-3 file:cursor-pointer file:border-0 file:bg-primary file:px-4 file:py-2 file:font-display file:text-xs file:font-bold file:uppercase file:tracking-wider file:text-primary-foreground hover:file:bg-primary/90"
+          />
+          <p className="text-xs text-muted-foreground">
+            {t("attachmentsHint")}
+          </p>
+          {attachmentError && (
+            <p className="text-xs text-destructive">
+              {translateError(attachmentError)}
+            </p>
+          )}
+          {attachments.length > 0 && (
+            <ul className="mt-2 space-y-1">
+              {attachments.map((f, i) => (
+                <li
+                  key={`${f.name}-${i}`}
+                  className="flex items-center gap-3 border border-border/50 bg-background px-3 py-2 text-xs"
+                >
+                  <Paperclip className="h-3 w-3 shrink-0 text-primary" aria-hidden="true" />
+                  <span className="flex-1 truncate text-foreground">
+                    {f.name}
+                  </span>
+                  <span className="shrink-0 tabular-nums text-muted-foreground">
+                    {formatBytes(f.size)}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => removeAttachment(i)}
+                    aria-label={t("attachmentRemove")}
+                    className="ms-1 inline-flex h-6 w-6 items-center justify-center text-muted-foreground transition-colors hover:text-destructive"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </fieldset>
 
       {state.status === "error" && (
@@ -327,6 +441,12 @@ export function QuoteForm() {
       </Button>
     </form>
   );
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 function Field({

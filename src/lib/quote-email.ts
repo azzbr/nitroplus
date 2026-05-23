@@ -4,7 +4,15 @@ import type { QuotePayload } from "@/lib/quote-schema";
 
 type SendResult = { ok: true } | { ok: false; error: string };
 
-export async function sendQuoteEmail(payload: QuotePayload): Promise<SendResult> {
+export type QuoteAttachment = {
+  filename: string;
+  content: Buffer;
+};
+
+export async function sendQuoteEmail(
+  payload: QuotePayload,
+  attachments: ReadonlyArray<QuoteAttachment> = []
+): Promise<SendResult> {
   const apiKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.RESEND_FROM_EMAIL;
   const toEmail = process.env.INQUIRY_EMAIL || COMPANY_INFO.EMAIL;
@@ -15,8 +23,11 @@ export async function sendQuoteEmail(payload: QuotePayload): Promise<SendResult>
 
   const resend = new Resend(apiKey);
 
-  const subject = `Quote inquiry — ${payload.vehicleYear} ${payload.vehicleMake} ${payload.vehicleModel}`;
-  const text = buildPlainText(payload);
+  const vehicleLabel = payload.vehicleMake && payload.vehicleModel && payload.vehicleYear
+    ? ` — ${payload.vehicleYear} ${payload.vehicleMake} ${payload.vehicleModel}`
+    : "";
+  const subject = `Quote inquiry${vehicleLabel} — ${payload.name}`;
+  const text = buildPlainText(payload, attachments);
   const html = `<pre style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace; white-space: pre-wrap; line-height: 1.5; font-size: 14px;">${escapeHtml(text)}</pre>`;
 
   try {
@@ -27,6 +38,9 @@ export async function sendQuoteEmail(payload: QuotePayload): Promise<SendResult>
       subject,
       text,
       html,
+      attachments: attachments.length > 0
+        ? attachments.map((a) => ({ filename: a.filename, content: a.content }))
+        : undefined,
     });
 
     if (result.error) {
@@ -41,7 +55,10 @@ export async function sendQuoteEmail(payload: QuotePayload): Promise<SendResult>
   }
 }
 
-function buildPlainText(p: QuotePayload): string {
+function buildPlainText(
+  p: QuotePayload,
+  attachments: ReadonlyArray<QuoteAttachment> = []
+): string {
   const sections: string[] = [
     "NITRO PLUS — QUOTE INQUIRY",
     "==========================",
@@ -77,6 +94,15 @@ function buildPlainText(p: QuotePayload): string {
   }
 
   if (p.notes) sections.push("", "NOTES", "-----", p.notes);
+
+  if (attachments.length > 0) {
+    sections.push(
+      "",
+      "ATTACHMENTS",
+      "-----------",
+      ...attachments.map((a) => `• ${a.filename}`)
+    );
+  }
 
   return sections.join("\n");
 }
