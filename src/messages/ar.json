@@ -34,6 +34,20 @@
     "closeMenu": "إغلاق القائمة"
   },
   "home": {
+    "vehiclePicker": {
+      "eyebrow": "ابحث عن قطع لسيارتك",
+      "headline": "ما السيارة التي تقودها؟",
+      "subheadline": "اختر الماركة والموديل والسنة — وسنأخذك إلى الكتالوج مفلتراً للقطع المناسبة.",
+      "makeLabel": "الماركة",
+      "makePlaceholder": "فورد، تويوتا، بي إم دبليو…",
+      "modelLabel": "الموديل",
+      "modelPlaceholder": "موستانج، باترول…",
+      "yearLabel": "السنة",
+      "yearPlaceholder": "2018",
+      "cta": "ابحث عن قطع",
+      "hint": "لم تجد ماركتك؟ اكتبها على أي حال —",
+      "browseAll": "أو تصفّح الكتالوج كاملاً"
+    },
     "experience": {
       "eyebrow": "الخبرة",
       "headline": "نعرف الفرق.",

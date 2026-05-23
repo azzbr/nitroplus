@@ -34,6 +34,20 @@
     "closeMenu": "Close menu"
   },
   "home": {
+    "vehiclePicker": {
+      "eyebrow": "Find parts for your car",
+      "headline": "What do you drive?",
+      "subheadline": "Pick your make, model, and year — we'll jump you to the catalog filtered to parts that fit.",
+      "makeLabel": "Make",
+      "makePlaceholder": "Ford, Toyota, BMW…",
+      "modelLabel": "Model",
+      "modelPlaceholder": "Mustang, Patrol…",
+      "yearLabel": "Year",
+      "yearPlaceholder": "2018",
+      "cta": "Find parts",
+      "hint": "Don't see your make? Type it anyway —",
+      "browseAll": "or browse the full catalog"
+    },
     "experience": {
       "eyebrow": "Experience",
       "headline": "We know the difference.",
