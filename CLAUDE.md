@@ -109,6 +109,7 @@ The site has a **shop / parts catalog**, but it is a **Request-for-Quote (RFQ) f
 - **Email delivery:** Resend (handles the quote inquiry email to Nitro Plus)
 - **Catalog data:** start with typed constants in `lib/products.ts` or MDX in `content/products/`. Graduate to a headless CMS (Sanity / Payload) only when the catalog passes ~50 SKUs and the owner wants to edit it without a deploy.
 - **Package manager:** pnpm
+- **Version ceilings (checked 2026-10):** TypeScript stays on **6.0.x** and ESLint on **9.x**. TS 7 is blocked because `typescript-eslint` (pulled in by `eslint-config-next`) caps TypeScript at `<6.1.0`, and TS 7 no longer ships the classic compiler API. ESLint 10 is blocked because the `eslint-plugin-react`, `eslint-plugin-import` and `eslint-plugin-jsx-a11y` versions bundled by `eslint-config-next` cap at ESLint 9. Re-check with `pnpm view typescript-eslint peerDependencies` and those plugins' peer ranges before retrying. Keep `@types/node` on the runtime's major (Node 22).
 - **Hosting:** **Vercel.** First-class Next.js App Router support, automatic `next/image` optimization, edge regions in the GCC. Netlify would also work but is a step behind on Next.js adapter parity.
 
 ### Explicitly NOT in the stack
