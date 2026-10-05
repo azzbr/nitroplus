@@ -41,6 +41,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local tool caches (e.g. SWC native binding cache on Windows)
+/.cache/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
